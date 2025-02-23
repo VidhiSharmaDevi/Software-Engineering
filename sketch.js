@@ -5,6 +5,7 @@ let isLoad1 = "false";
 let settingMenu = false;
 let bgImage, titleIcon;
 let settingsImg, settingsImgHover, creditsImg, creditsImgHover;
+let mainScreenSound;
 
 function preload() {
   bgImage = loadImage('assets/roughititlescreen.png'); 
@@ -15,13 +16,14 @@ function preload() {
   settingsImgHover = loadImage('assets/OSettings_2.png');
   creditsImg = loadImage('assets/OCredits_1.png');
   creditsImgHover = loadImage('assets/OCredits_2.png');
+  mainScreenSound = loadSound('sounds/mainScreenSound.mp3');
 }
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
   textAlign(CENTER, CENTER);
   textSize(32);
-
+ 
   isLoad1 = localStorage.getItem("isLoad1");
 
   let storedState = localStorage.getItem("gameState");
@@ -34,13 +36,12 @@ function setup() {
   buttons.push(new Button("Settings", width - 100, height - 100, 120, 120, settingsImg, settingsImgHover, () => settingMenu = true));
   buttons.push(new Button("Credits", width - 250, height - 100, 120, 120, creditsImg, creditsImgHover, () => loadCredits()));
   resetButton = new Button("Reset Game Save", width / 2, 420, 300, 75, null, null, () => deleteSave());
-
-
   createModal();
 }
 
 function draw() {
   background(20);
+  
 
   if (gameState === "menu") {
     drawMainMenu();
@@ -96,11 +97,13 @@ function mousePressed() {
         setTimeout(() => btn.action(), 200);
       }
     }
+    if(!mainScreenSound.isPlaying())
+      mainScreenSound.play();
+    }
     if (resetButton.isHovered() && localStorage.getItem("isLoad1") !== "false") {
       buttonClick();
       setTimeout(() => resetButton.action(), 200);
     }
-  }
 }
 
 function goBack() {

@@ -110,7 +110,6 @@ function createModal() {
       buttonSound.setVolume(isMuted ? 0 : currVolume);
     }
   }
-
 }
 
 function showSettings() {
@@ -133,7 +132,15 @@ function toggleMute() {
   if(buttonSound) {
     buttonSound.setVolume(isMuted ? 0 : currVolume);
   }
-  
+  if(mainScreenSound){
+    mainScreenSound.setVolume(isMuted ? 0 : currVolume);
+  }
+  if(loginSound){
+    loginSound.setVolume(isMuted ? 0 : currVolume);
+  }
+  if(backgroundSound){
+    backgroundSound.setVolume(isMuted ? 0 : currVolume);
+  }
   localStorage.setItem("volume", currVolume);
   localStorage.setItem("isMuted", isMuted.toString());
 }
@@ -148,6 +155,15 @@ function updateVolume() {
     }
     if(buttonSound) {
       buttonSound.setVolume(volume);
+    }
+    if(mainScreenSound){
+      mainScreenSound.setVolume(volume); 
+    }
+    if(loginSound){
+      loginSound.setVolume(volume);
+    }
+    if(backgroundSound){
+      backgroundSound.setVolume(volume);
     }
 
     localStorage.setItem("volume", volume);

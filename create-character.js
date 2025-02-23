@@ -2,12 +2,14 @@ let buttons = [], confirmButton;
 let bgImage, characterImage;
 let menuSong, buttonSound;
 let currVolume = 0.5;
+let backgroundSound;
 
 
 function preload() {
     bgImage = loadImage('assets/roughititlescreen.png');
     characterImage = loadImage('assets/tempCharacter.png');
     buttonSound = loadSound('sounds/buttonClick.mp3');
+    backgroundSound = loadSound('sounds/stadiumSound.mp3');
 }
 
 function setup() {
@@ -17,7 +19,9 @@ function setup() {
     textSize(32);
 
     loadVolumeSetting();
-
+    if (!backgroundSound.isPlaying()){
+        backgroundSound.play()
+            }
     localStorage.setItem("characterTag", null);
 
     buttons.push(new Button("Back", 175, height - 50, 200, 50, null, null, () => goBack()));
@@ -25,7 +29,9 @@ function setup() {
     buttons.push(new Button("Character 2", width/2,       height/2 - 275, 200, 50, null, null, () => selectedCharacter("Character 2")));
     buttons.push(new Button("Character 3", width/2 + 230, height/2 - 275, 200, 50, null, null, () => selectedCharacter("Character 3")));
     confirmButton = new Button("Confirm Character", width-175, height - 50, 200, 50, null, null, () => confirmCharacter());
+   
 }
+
 
 function draw() {
     background(bgImage);
@@ -88,6 +94,7 @@ function confirmCharacter() {
 }
 
 function buttonClick() {
+    loadVolumeSetting();
     buttonSound.play();
 }
 
@@ -100,9 +107,10 @@ function loadVolumeSetting() {
     }
     if (savedMute !== null) {
         let isMuted = savedMute === "true";
-        
-        //menuSong.setVolume(isMuted ? 0 : currVolume);
+    if(backgroundSound || buttonSound){
+        backgroundSound.setVolume(isMuted ? 0 : currVolume);
         buttonSound.setVolume(isMuted ? 0 : currVolume);
+    }
     }
 }
 
