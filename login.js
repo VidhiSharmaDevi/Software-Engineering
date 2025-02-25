@@ -1,15 +1,19 @@
 let bgImage;
 let currVolume = 0.5;
-
+let loginSound;
 function preload() {
   bgImage = loadImage('assets/roughititlescreen.png');
   titleIcon = loadImage('assets/OREDTitle.png');
+  loginSound = loadSound('sounds/mainScreenSound.mp3');
+
 }
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
   createLoginForm();
-}
+  loadVolumeSetting();
+  }
+
 
 function draw() {
   background(bgImage);
@@ -66,11 +70,18 @@ function loadVolumeSetting() {
   }
   if (savedMute !== null) {
       let isMuted = savedMute === "true";
-      /*
-      if (menuSong || buttonSound) {
-          menuSong.setVolume(isMuted ? 0 : currVolume);
-          buttonSound.setVolume(isMuted ? 0 : currVolume);
+  
+      if (loginSound){
+         loginSound.setVolume(isMuted ? 0 : currVolume);
       }
-      */
+      }
+      console.log("Saved Volume:", localStorage.getItem("volume"));
+      console.log("Saved Mute:", localStorage.getItem("isMuted"));
   }
-}
+
+
+    function mousePressed() {
+      if (!loginSound.isPlaying()) {
+        loginSound.play();
+      }
+    }
