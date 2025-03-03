@@ -1,4 +1,4 @@
-const DEBUG = false;
+`const DEBUG = false;
 const PLAYER_OFFSET_X = 40;
 const PLAYER_OFFSET_Y = 80;
 const PLAYER_WIDTH = 80;
@@ -127,7 +127,7 @@ function draw() {
         drawTopDownField();
         drawTopDownPlayers();
     } else {
-        // Your original side-view drawing
+        // side-view drawing
         background(50, 168, 82);
         image(bgImage, 0, 0, width, height);
         drawField();
