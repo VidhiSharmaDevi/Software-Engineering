@@ -17,6 +17,8 @@ let currentPerspective = "side";
 let initialFielderPositions = [];
 const catchingRadius = 100;
 
+let umpireCall = "";
+let showStrikePopup = false;
 let bgImage, batterGif;
 let settingButton, returnButton;
 let tempSwapPerspective;
@@ -117,38 +119,47 @@ function setup() {
 }
 
 function draw() {
-  background(50, 168, 82);
+  background(50, 168, 82);  // Green field background
   image(bgImage, 0, 0, width, height);
   ballCaughtThisFrame = false;
 
   push();
-    if (currentPerspective === "topDown") {
-      background(34, 139, 34); // a solid green field
-      drawTopDownField();
-      drawTopDownPlayers();
-    } else {
-      // Your original side-view drawing
-      background(50, 168, 82);
-      image(bgImage, 0, 0, width, height);
-      drawField();
-      drawPlayers();
-      if (batter) {
-        stroke(255, 0, 0);
-        strokeWeight(2);
-        noFill();
-        rectMode(CENTER);
-        rect(batter.x, batter.y - 15, 30, 20);
-      }
+  if (currentPerspective === "topDown") {
+    background(34, 139, 34); // Solid green for top-down view
+    drawTopDownField();
+    drawTopDownPlayers();
+  } else {
+    // Side view rendering
+    background(50, 168, 82);
+    image(bgImage, 0, 0, width, height);
+    drawField();
+    drawPlayers();
+    
+    drawUmpire();
+    
+    if (batter) {
+      stroke(255, 0, 0);
+      strokeWeight(2);
+      noFill();
+      rectMode(CENTER);
+      rect(batter.x, batter.y - 15, 30, 20);
     }
-    // draw hitzone
+  }
   pop();
-  
+
+  // Ensure umpire is drawn last so it's not hidden
+  if (currentPerspective === "side") {
+    drawUmpire();
+  }
   // Draw the HUD
   push();
-    drawScoreboard();
-    settingButton.display();
-    returnButton.display();
-    tempSwapPerspective.display();
+  drawScoreboard();
+  if (showStrikePopup) {
+    drawStrikePopup();
+  }
+  settingButton.display();
+  returnButton.display();
+  tempSwapPerspective.display();
   pop();
 
   push();
@@ -157,6 +168,10 @@ function draw() {
   }
   pop();
 
+  // Ensure umpire is drawn last so it's not hidden
+  if (currentPerspective === "side") {
+    drawUmpire();
+  }
   // Game logic
   if (pitchAnimation) {
     pitcher.armAngle += 0.05;
@@ -168,10 +183,11 @@ function draw() {
   
   if (ballMoving && !ballHit && !ball.throwing) {
     ball.y += ball.speedY;
+    checkStrikeOrBall();
+
     if (ball.y >= batter.y && abs(ball.x - batter.x) < hitZoneWidth && !swingAttempt) {
       ball.strikePitch = true;
       swingAttempt = true;
-
       strikes++;
       if (DEBUG) console.log("No swing! Strike " + strikes);
     }
@@ -186,7 +202,6 @@ function draw() {
       if (ball.speedY < 0) {
         ball.speedY += gravity;
       } else {
-        
         let horizontalDistance = ball.x - pitcher.x;
         let maxDistance = windowWidth * 0.6; 
       
@@ -241,7 +256,6 @@ function draw() {
       if (DEBUG) console.log(`Fielder targeting base ${chosenRunner.base + 1} catches the ball`);
       ball.throwing = false;
   
-
       if (targetFielder.isInfielder) {
         let runnerAtFielderBase = runners.find(runner => runner.base === chosenRunner.base);
         let baseVal = chosenRunner.base;
@@ -276,21 +290,22 @@ function draw() {
       }
 
       if (outs >= 3) {
-          nextInning();
-          return;
+        nextInning();
+        return;
       }
-  
+
       let targetRunner = getNearestUnsafedRunner(targetFielder);
       if (targetRunner) {
-          if (DEBUG) console.log(`Throwing to next unsafe runner to base ${targetRunner.base + 1}`);
-          handleGroundThrow(targetFielder);
+        if (DEBUG) console.log(`Throwing to next unsafe runner to base ${targetRunner.base + 1}`);
+        handleGroundThrow(targetFielder);
       } else {
-          resetBatter();
+        resetBatter();
       }
     }
   }
   moveRunners();
 }
+
 
 function resetFieldersPosition() {
   fielders.forEach((fielder, index) => {
@@ -435,6 +450,11 @@ function drawTopDownPlayers() {
 
   fill('white');
   ellipse(ball.x, ball.y, 10, 10);
+
+  // Draw umpire in top-down mode
+  fill('black');
+  ellipse(370, 370, 15, 15);  // Small circle to represent umpire
+
 }
 
 function drawField() {
@@ -511,6 +531,113 @@ function drawScoreboard() {
   text(`Strikes: ${strikes}`, 30, 100);
 }
 
+function drawUmpire() {
+  console.log("Umpire should be drawn at (250, 350)");
+  console.log("Umpire Call:", umpireCall);
+
+  // Skin color for the umpire's face and hands
+  fill(255, 220, 185); 
+
+  // Umpire head (circle for head)
+  ellipse(250, 350, 40, 40); // Slightly larger head for aesthetic appeal
+  
+  // Umpire cap (small rounded rectangle with subtle curves for more realism)
+  fill(0); // Dark color for the cap
+  beginShape();
+  vertex(230, 335); 
+  vertex(270, 335); 
+  vertex(260, 320);  // Top of the cap
+  vertex(240, 320);  // Slightly more rounded top for the cap
+  endShape(CLOSE);
+  
+  // Umpire face details (eyes, nose, and mouth)
+  fill(255); // White color for eyes
+  ellipse(240, 345, 6, 6);  // Left eye (slightly bigger for aesthetic look)
+  ellipse(260, 345, 6, 6);  // Right eye (slightly bigger for aesthetic look)
+  
+  // Dark color for the pupils to make eyes pop
+  fill(0);
+  ellipse(240, 345, 3, 3);  // Left pupil
+  ellipse(260, 345, 3, 3);  // Right pupil
+  
+  // Nose (small triangle for nose shape)
+  fill(255, 190, 150); // Nose color
+  triangle(250, 350, 245, 355, 255, 355);
+  
+  // Smile (better curve for mouth)
+  stroke(0);
+  noFill();
+  arc(250, 355, 18, 12, 0, PI); // Smoother, friendlier smile
+  
+  // Umpire body (shirt and pants)
+  fill(255); // White shirt
+  rect(240, 360, 20, 40); // Shirt, centered
+  
+  
+  // Umpire arms (slightly adjusted to give a more lifelike pose)
+  stroke(0); // Black color for arms
+  if (umpireCall === "strike") {
+    // Strike pose with arms raised
+    line(240, 375, 210, 350);  // Left arm raised at an angle
+    line(260, 375, 290, 320);  // Right arm raised at an angle
+    setTimeout(() => {
+      console.log("Después de 1 segundo");
+      umpireCall = "";
+  }, 1000);
+  } else if (umpireCall === "ball") {
+    // Ball pose with arms extended
+    line(240, 375, 210, 385);  // Left arm extended out
+    line(260, 375, 290, 385);  // Right arm extended out
+  } else {
+    // Default pose with arms relaxed
+    line(240, 375, 210, 380);  // Left arm relaxed
+    line(260, 375, 290, 380);  // Right arm relaxed
+  }
+
+  // Umpire pants (slightly adjusted proportions for a better fit)
+  fill(0); // Black pants
+  rect(240, 400, 8, 20); // Left leg
+  rect(252, 400, 8, 20); // Right leg
+  
+  // Umpire shoes (adding a little detail for feet)
+  fill(50); // Dark grey shoes
+  ellipse(240, 420, 10, 6); // Left shoe
+  ellipse(252, 420, 10, 6); // Right shoe
+  
+  // Umpire chest buttons (more subtle, added slight shading)
+  fill(0); // Black buttons on the shirt
+  ellipse(250, 380, 4, 4); // Button 1
+  ellipse(250, 385, 4, 4); // Button 2
+}
+
+
+// Umpire Call (Strike or Ball)
+function checkStrikeOrBall() {
+    if (ballMoving && !ballHit && !ball.throwing) {
+      ball.y += ball.speedY;
+      if (ball.y >= batter.y && abs(ball.x - batter.x) < hitZoneWidth && !swingAttempt) {
+        ball.strikePitch = true;
+        swingAttempt = true;
+        strikes++;
+        umpireCall = "strike";  // This sets the umpire call to 'strike'
+        
+        showStrikePopup = true;
+        setTimeout(() => {
+          showStrikePopup = false;
+        }, 1500);
+        console.log("Umpire Call Updated:", umpireCall);  // Check this log
+      }
+    }
+}
+
+function drawStrikePopup() {
+  fill(255, 0, 0); // Red color for impact
+  textSize(64);
+  textAlign(CENTER, CENTER);
+  text("STRIKE!", width / 2, height / 4); // Show in the upper part of the screen
+}
+
+
 function moveRunners() {
   runners = runners.filter(runner => {
     if (runner.running) {
@@ -542,6 +669,14 @@ function moveRunners() {
           } else {
             runner.running = false;
             runner.safe = true;
+            /*
+            line(200, 375, 240, 375);  // Left arm fully horizontal
+            line(260, 375, 300, 375);  // Right arm fully horizontal
+            setTimeout(() => {
+              console.log("Después de 1 segundo");
+              line(240, 375, 200, 385);  // Left arm horizontal
+              line(260, 375, 300, 385);
+            }, 10000);*/
             if (DEBUG) console.log(`Runner reached base ${runner.base} and is holding.`);
           }
         }
