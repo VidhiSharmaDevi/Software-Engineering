@@ -1,5 +1,5 @@
 let map;
-    let button;
+let button;
 
     function preload() {
       map = loadImage('assets/map.png');
@@ -9,12 +9,23 @@ let map;
         createCanvas(windowWidth, windowHeight);
         levelButton();
         secretLevel();
+        backButton();
 
     }
 
     function draw(){
         background(0);
         image(map, 0, 0, windowWidth, windowHeight);
+    }
+
+    function backButton(){
+        button = createButton('back');
+        button.style('border-radius', '100%',);
+        button.style('width', '50px');
+        button.style('height', '50px');
+        button.style('font-weight', 'bold');
+        button.position(windowWidth /100 , windowHeight - windowHeight /10 );
+        button.mousePressed(back);
     }
 
     function levelButton(){ //i know I can make a 'new Button' and better function management , but  ill do that later
@@ -42,6 +53,9 @@ let map;
         window.location.href = "game.html";
     }
 
+    function back() {
+        window.location.href = "create-character.html";
+    }
     function dawgs() {
         window.open('https://www.youtube.com/watch?v=RQmEERvqq70&ab_channel=Generuu')
     }
