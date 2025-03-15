@@ -4,7 +4,7 @@ let settingMenu = false;
 
 
 function preload() {
-    bgImage = loadImage('assets/roughititlescreen3.png');
+    bgImage = loadImage('assets/roughititlescreen4.png');
     characterImage = loadImage('assets/tempCharacter.png');
     soundEffects["buttonSound"] = loadSound('sounds/buttonClick.mp3');
     currSong = loadSound('sounds/stadiumSound.mp3');
