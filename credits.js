@@ -1,5 +1,6 @@
 let backButton;
 let settingMenu = false;
+let audioSelectionMenu = false;
 
 function preload() {
     soundEffects["buttonSound"] = loadSound("sounds/buttonClick.mp3");

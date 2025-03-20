@@ -2,6 +2,7 @@ let map;
 let buttons= [];
 let levelOneImg, levelTwoImg, levelThreeImg, secretLevelImg;
 let settingMenu = false;
+let audioSelectionMenu = false;
 
     function preload() {
       map = loadImage('assets/map.png');

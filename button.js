@@ -1,5 +1,5 @@
 class Button {
-    constructor(label, x, y, width, height, img = null, imgHover = null, action = null, isSettingsButton = false) {
+    constructor(label, x, y, width, height, img = null, imgHover = null, action = null, isSettingsButton = false, isAudioMenuButton = false) {
         this.label = label;
         this.x = x;
         this.y = y;
@@ -9,6 +9,7 @@ class Button {
         this.imgHover = imgHover;
         this.action = action;
         this.isSettingsButton = isSettingsButton;
+        this.isAudioMenuButton = isAudioMenuButton;
     }
   
     display() {

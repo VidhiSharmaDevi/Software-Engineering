@@ -1,6 +1,7 @@
 let buttons = [], confirmButton;
 let bgImage, characterImage;
 let settingMenu = false;
+let audioSelectionMenu = false;
 
 
 function preload() {

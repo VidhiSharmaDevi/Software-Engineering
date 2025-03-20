@@ -3,6 +3,7 @@ let loadButtons = [];
 let gameState = "menu";
 let isLoad1 = "false";
 let settingMenu = false;
+let audioSelectionMenu = false;
 let bgImage, titleIcon;
 let settingsImg, settingsImgHover, creditsImg, creditsImgHover;
 
