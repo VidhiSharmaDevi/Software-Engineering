@@ -37,14 +37,59 @@ let audioSelectionMenu = false;
     }
     
 
+    // function levelOneButton(){ //i know I can make a 'new Button' and better function management , but  ill do that later
+        
+    //     let button = createButton('level 1');
+    //     button.style('border-radius', '100%',);
+    //     button.style('width', '50px');
+    //     button.style('height', '50px');
+    //     button.style('font-weight', 'bold');
+    //     button.position(windowWidth / 2 + 200, windowHeight /2 - 200 );
+    //     button.mousePressed(cityOne);
+    //     btnArr.push(button);
+    // }
+    // function levelTwoButton(){ 
+        
+    //     let button = createButton('level 2');
+    //     button.style('border-radius', '100%',);
+    //     button.style('width', '50px');
+    //     button.style('height', '50px');
+    //     button.style('font-weight', 'bold');
+    //     button.position(windowWidth / 2 - 250, windowHeight /2 - 200 );
+    //     button.mousePressed(cityTwo);
+    //     btnArr.push(button);
+    // }
+
+    // function levelThreeButton(){ 
+        
+    //     let button = createButton('level 3');
+    //     button.style('border-radius', '100%',);
+    //     button.style('width', '50px');
+    //     button.style('height', '50px');
+    //     button.style('font-weight', 'bold');
+    //     button.position(windowWidth / 2 - 150, windowHeight /2 + 150 );
+    //     button.mousePressed(cityThree);
+    //     btnArr.push(button);
+    // }
+    // function secretLevel(){
+    //     let button = createButton('?');
+    //     button.style('border-radius', '100%',);
+    //     button.style('width', '50px');
+    //     button.style('height', '50px');
+    //     button.style('font-weight', 'bold');
+    //     button.position(windowWidth / 2 - 600 , windowHeight /2 - 265 );
+    //     button.mousePressed(dawgs);
+    //     btnArr.push(button);
+    // }
+
     function cityOne() {
-        window.location.href = "gameOne.html";
+        window.location.href = "game.html";
     }
     function cityTwo() {
-        window.location.href = "gameTwo.html";
+        window.location.href = "game.html";
     }
     function cityThree() {
-        window.location.href = "gameThree.html";
+        window.location.href = "game.html";
     }
 
     function dawgs() {

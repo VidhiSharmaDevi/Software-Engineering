@@ -6,6 +6,7 @@ let audio3Button;
 let audio4Button;
 let audio5Button;
 
+
 function createAudioMenu(){
 const style = document.createElement("style")
 style.textContent= `
@@ -122,8 +123,6 @@ audio5Button.addEventListener("click", (event) => {
     updateAudio(event);
    
 });
-
-
 }
 function showAudioMenu() {
     audioMenu.style.display = "flex";
@@ -161,7 +160,6 @@ function updateAudio(event){
     if (currSong) {
         currSong.play();
         currSong.loop();
-} 
 }
 }
-
+}
