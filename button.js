@@ -34,6 +34,7 @@ class Button {
                 textSize(16);
                 textAlign(CENTER, CENTER);
                 text(this.label, this.x, this.y);
+                cursor(showHover ? 'pointer' : 'default');
             }
         pop();
     }

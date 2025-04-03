@@ -11,7 +11,7 @@ function preload() {
     runnerIdle = loadImage('assets/temp_assets/sprites/01_idle2.png');
     catcherImg = loadImage('assets/temp_assets/sprites/01_Catch.png');
     ballImg = loadImage('assets/Baseball1.png');
-    targetImage = loadImage('assets/final_design/Target.png');
+    targetImage = loadImage('assets/final_design/Target2.png'); 
 
     currSong = loadSound('sounds/gamesong.mp3');
     soundEffects["buttonSound"] = loadSound('sounds/buttonClick.mp3');
