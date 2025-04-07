@@ -131,49 +131,32 @@ let audioSelectionMenu = false;
         let movingObject = { x: 0, y: 0, speed: 2, path: [] };
     let pathIndex = 0;
 
-    function createPath() {
-        movingObject.path = [
-            { x: 100, y: 100 },
-            { x: 300, y: 100 },
-            { x: 300, y: 300 },
-            { x: 100, y: 300 },
-            { x: 100, y: 100 }
-        ];
-        movingObject.x = movingObject.path[0].x;
-        movingObject.y = movingObject.path[0].y;
+//---------------------------------------------------------------
+
+let circle = { x: 100, y: 100, targetX: 300, targetY: 300, speed: 2 };
+
+function setup() {
+    createCanvas(400, 400);
+}
+
+function draw() {
+    background(220);
+
+    // Calculate the distance to the target
+    let dx = circle.targetX - circle.x;
+    let dy = circle.targetY - circle.y;
+    let distance = Math.sqrt(dx * dx + dy * dy);
+
+    // Move the circle closer to the target
+    if (distance > circle.speed) {
+        circle.x += (dx / distance) * circle.speed;
+        circle.y += (dy / distance) * circle.speed;
+    } else {
+        circle.x = circle.targetX;
+        circle.y = circle.targetY;
     }
 
-    function moveAlongPath() {
-        if (pathIndex < movingObject.path.length - 1) {
-            let target = movingObject.path[pathIndex + 1];
-            let dx = target.x - movingObject.x;
-            let dy = target.y - movingObject.y;
-            let distance = Math.sqrt(dx * dx + dy * dy);
-
-            if (distance < movingObject.speed) {
-                movingObject.x = target.x;
-                movingObject.y = target.y;
-                pathIndex++;
-            } else {
-                movingObject.x += (dx / distance) * movingObject.speed;
-                movingObject.y += (dy / distance) * movingObject.speed;
-            }
-        }
-    }
-
-    function drawMovingObject() {
-        fill(255, 0, 0);
-        ellipse(movingObject.x, movingObject.y, 20, 20);
-    }
-
-    createPath();
-
-    function draw() {
-        background(0);
-        image(map, 0, 0, windowWidth, windowHeight);
-        for (let btn of buttons) {
-            btn.display();
-        }
-        moveAlongPath();
-        drawMovingObject();
-    }
+    // Draw the circle
+    fill(255, 0, 0);
+    ellipse(circle.x, circle.y, 20, 20);
+}
