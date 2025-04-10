@@ -78,7 +78,7 @@ function createLoginForm() {
 }
 
 function login(username, password) {
-    fetch("http://localhost:3000/login", {
+    fetch("http://10.22.9.100:3000/login", {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
@@ -206,7 +206,7 @@ function registerUser(name, surname, email, password, confirmPassword) {
         return;
     }
 
-    fetch("http://localhost:3000/register", {
+    fetch("http://10.22.9.100:3000/register", {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
