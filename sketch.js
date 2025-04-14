@@ -6,6 +6,10 @@ let bgImage, titleIcon;
 let settingsImg, settingsImgHover, creditsImg, creditsImgHover, howToImg, howToImgHover;
 let audioSelectionMenu = false;
 let loadButtonWidth, loadButtonHeight;
+let pointerImg;
+let pointerNormal, pointerClicked;
+let pointerX = 0;
+let pointerY = 0;
 
 function preload() {
     bgImage = loadImage('assets/roughititlescreen4.png');
@@ -18,6 +22,9 @@ function preload() {
     howToImgHover = loadImage('assets/how-to-hover.png');
     currSong = loadSound('sounds/mainScreenSound.mp3');
     soundEffects["buttonSound"] = loadSound('sounds/buttonClick.mp3');
+    pointerNormal = loadImage('assets/pointer5.png');
+    pointerClicked = loadImage('assets/pointerclicked.png');
+    pointerImg = pointerNormal;
 }
 
 function setup() {
@@ -37,6 +44,8 @@ function setup() {
     startMenuButtons();
     loadMenuButtons();
     createModal();
+
+    noCursor();
 }
 
 function draw() {
@@ -54,6 +63,16 @@ function draw() {
             break;
         default:
     }
+
+    const pointerSize = 40;
+    if (pointerImg) {
+        image(pointerImg, pointerX, pointerY, pointerSize, pointerSize);
+    } else {
+        fill(255, 0, 0);
+        ellipse(pointerX, pointerY, pointerSize, pointerSize);
+    }
+    pointerX = mouseX;
+    pointerY = mouseY;
 }
 
 function drawMainMenu() {
@@ -75,7 +94,7 @@ function drawMainMenu() {
     textStyle(BOLD);
     textStyle(NORMAL);
     
-    cursor('default');
+    //cursor('default');
     for (let btn of buttons) {
         btn.display();
     }
@@ -98,7 +117,8 @@ function drawLoadScreen() {
     let baseIconHeight = titleIcon.height * iconScale;
     image(titleIcon, (width - baseIconWidth) / 2, height * 0.01, baseIconWidth, baseIconHeight);
 
-    cursor('default');
+    //cursor('default');
+    noCursor();
     for (let btn of loadButtons) {
         btn.display();
     }
@@ -108,6 +128,8 @@ function drawLoadScreen() {
 }
 
 function mousePressed() {
+
+    pointerImg = pointerClicked;
     if (gameState === "preMenu") {
         gamestate = "menu";
     }
@@ -130,6 +152,10 @@ function mousePressed() {
         currSong.play();
         currSong.loop();
     }
+}
+
+function mouseReleased() {
+    pointerImg = pointerNormal;
 }
 
 function goBack() {

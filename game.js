@@ -46,6 +46,13 @@ let topDownCamera;
 
 let audioSelectionMenu = false;
 let audioButton;
+let hoveredButton = null;
+let pointerImg;
+let pointerNormal, pointerClicked;
+let pointerX = 0;
+let pointerY = 0;
+
+
 gameState = "game";
 // Difficulty
 let generalDifficultyScale = 1;
@@ -86,6 +93,9 @@ function preload() {
     targetImage = loadImage('assets/final_design/Target2.png');
     settingButtonImage = loadImage('assets/final_design/game_setting2.png');
     menuButtonImage = loadImage('assets/final_design/game_home2.png');
+    pointerNormal = loadImage('assets/pointer5.png');
+    pointerClicked = loadImage('assets/pointerclicked.png');
+    pointerImg = pointerNormal; 
 
 
     currSong = loadSound('sounds/gamesong.mp3');
@@ -146,23 +156,26 @@ function setup() {
     let menuButtonY = settingsButtonY + heightGap; 
     
     settingButton = new Button("Settings", settingsButtonX, settingsButtonY, buttonSize, buttonSize, settingButtonImage, settingButtonImage, () => settingsClick());
-    returnButton = new Button("Menu", menuButtonX, menuButtonY, buttonSize, buttonSize, menuButtonImage, menuButtonImage, () => backToMenu());
-    audioButton = new Button("Audio", settingsButtonX * .995, settingsButtonY * 5, buttonSize * 1.4, buttonSize * .45, null, null, () => audioClick());
-    Difficulty1 = new Button("make Normal", settingsButtonX * .995, settingsButtonY * 6, buttonSize * 1.4, buttonSize * .45, null, null, () => changeDifficulty(1));
-    Difficulty2 = new Button("make Hard", settingsButtonX * .995, settingsButtonY * 7, buttonSize * 1.4, buttonSize * .45, null, null, () => changeDifficulty(2));
-    Difficulty3 = new Button("make Impossible", settingsButtonX * .995, settingsButtonY * 8, buttonSize * 1.4, buttonSize * .45, null, null, () => changeDifficulty(3));
-    loseDemo = new Button("Lose Demo", settingsButtonX * .995, settingsButtonY * 10, buttonSize * 1.4, buttonSize * .45, null, null, () => loseClick());
-    winDemo = new Button("Win Demo", settingsButtonX * .995, settingsButtonY * 11, buttonSize * 1.4, buttonSize * .45, null, null, () => winClick());
+    returnButton = new Button("Menu", menuButtonX, menuButtonY, buttonSize, buttonSize, menuButtonImage, menuButtonImage, () => returnToMenu());
+    audioButton = new Button("Audio", width - 80, 190, 125, 40, null, null, () => audioClick());
+    Difficulty1 = new Button("make Normal", width - 80, 240, 125, 40, null, null, () => changeDifficulty(1));
+    Difficulty2 = new Button("make Hard", width - 80, 290, 125, 40, null, null, () => changeDifficulty(2));
+    Difficulty3 = new Button("make Impossible", width - 80, 340, 125, 40, null, null, () => changeDifficulty(3));
+    loseDemo = new Button("Lose Demo", width - 80, 640, 120, 40, null, null, () => loseClick());
+    winDemo = new Button("Win Demo", width - 80, 690, 120, 40, null, null, () => winClick());
 
     createModal();
     createAudioMenu();
     createWinPopup();
     createLosePopup();
     createDonePopup();
+
+    noCursor();
 }
 
 function draw() {
-    cursor('default');
+    //cursor('default');
+    noCursor();
     updateUmpire();
     ballCaughtThisFrame = false;
     let dt = deltaTime / 1000;
@@ -371,6 +384,16 @@ function draw() {
         moveRunners(fixedDt);
         accumulator -= fixedDt;
     }
+
+    const pointerSize = 40;
+    if (pointerImg) {
+        image(pointerImg, pointerX, pointerY, pointerSize, pointerSize);
+    } else {
+        fill(255, 0, 0);
+        ellipse(pointerX, pointerY, pointerSize, pointerSize);
+    }
+    pointerX = mouseX;
+    pointerY = mouseY;
 }
 
 // Resets everything during an inning
@@ -1040,6 +1063,8 @@ function loadVolumeSetting() {
 
 // Handle response to user mouse input
 function mousePressed() {
+
+    pointerImg = pointerClicked;
     if (!settingMenu && !audioSelectionMenu) {
         if (settingButton.isHovered()) {
             buttonClick();
@@ -1090,6 +1115,10 @@ function mousePressed() {
     if (!currSong.isPlaying()) {
         currSong.loop();
     }
+}
+
+function mouseReleased() {
+    pointerImg = pointerNormal;
 }
 
 // Handle change of perspective

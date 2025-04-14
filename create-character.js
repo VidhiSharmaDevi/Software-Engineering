@@ -4,12 +4,21 @@ let settingMenu = false;
 let audioSelectionMenu = false;
 gameState = "createCharacter";
 
+let pointerImg;
+let pointerNormal, pointerClicked;
+let pointerX = 0;
+let pointerY = 0;
+
 function preload() {
     bgImage = loadImage('assets/roughititlescreen4.png');
     characterImage = loadImage('assets/tempCharacter.png');
     characterImage1 = loadImage('/assets/tempCharacter1.png');  // Load option 2's character
     soundEffects["buttonSound"] = loadSound('sounds/buttonClick.mp3');
     currSong = loadSound('sounds/stadiumSound.mp3');
+
+    pointerNormal = loadImage('assets/pointer5.png');
+    pointerClicked = loadImage('assets/pointerclicked.png');
+    pointerImg = pointerNormal; 
 }
 
 function setup() {
@@ -31,6 +40,8 @@ function setup() {
 
     createCharacterButtons();
     createModal();
+
+    noCursor();
 }
 
 function draw() {
@@ -52,7 +63,8 @@ function draw() {
     fill('black');
 
     let characterTag = localStorage.getItem("characterTag");
-    cursor('default');
+    //cursor('default');
+    noCursor();
 
     if (characterTag === "Character 1") {
         let scopedDynamicSize = width * 0.025;
@@ -77,9 +89,22 @@ function draw() {
     if (characterTag !== "null") {
         confirmButton.display();
     }
+
+    const pointerSize = 40;
+    if (pointerImg) {
+        image(pointerImg, pointerX, pointerY, pointerSize, pointerSize);
+    } else {
+        fill(255, 0, 0);
+        ellipse(pointerX, pointerY, pointerSize, pointerSize);
+    }
+    pointerX = mouseX;
+    pointerY = mouseY;
 }
 
 function mousePressed() {
+
+    pointerImg = pointerClicked;
+
     if(inputEnabled) {
         for (let btn of buttons) {
             if (btn.isHovered() && btn.action) {
@@ -97,6 +122,10 @@ function mousePressed() {
             currSong.loop();
         }
     }
+}
+
+function mouseReleased() {
+    pointerImg = pointerNormal;
 }
 
 function selectedCharacter(characterTag) {

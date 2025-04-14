@@ -15,6 +15,11 @@ let animFinished = true;
 let char;
 gameState = "map";
 
+let pointerImg;
+let pointerNormal, pointerClicked;
+let pointerX = 0;
+let pointerY = 0;
+
 function preload() {
     map = loadImage('assets/Temp_Map.png');
     idleAnimation = loadImage('assets/temp_assets/IDLE1.gif');
@@ -28,6 +33,10 @@ function preload() {
     levelTwoHover= loadImage('assets/level2Hover.png');
     levelThreeHover= loadImage('assets/level3Hover.png');
     secretLevelHover = loadImage('assets/secretlevelhover.png');
+
+    pointerNormal = loadImage('assets/pointer5.png');
+    pointerClicked = loadImage('assets/pointerclicked.png');
+    pointerImg = pointerNormal; 
 }
 
 function cityOne() {
@@ -108,6 +117,8 @@ function setup(){
     
     loadVolumeSetting();
     createModal();
+
+    noCursor();
 }
 
 class character {
@@ -216,7 +227,8 @@ function keyPressed() {
 function draw() {
     background(0);
     image(map, 0, 0, windowWidth, windowHeight);
-    cursor('default');
+    //cursor('default');
+    noCursor();
 
     imageMode(CENTER);
     for (let lvl of levels) {
@@ -256,4 +268,14 @@ function draw() {
             char.img = idleAnimation;
         }
     }
+
+    const pointerSize = 40;
+    if (pointerImg) {
+        image(pointerImg, pointerX, pointerY, pointerSize, pointerSize);
+    } else {
+        fill(255, 0, 0);
+        ellipse(pointerX, pointerY, pointerSize, pointerSize);
+    }
+    pointerX = mouseX;
+    pointerY = mouseY;
 }
