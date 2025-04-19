@@ -14,6 +14,7 @@ let directionValue = 0.0;
 let powerMultiplier = 1.0;
 let powerZoneLevel = "low";
 let targetImage;
+let directionImage;
 
 function playerHit() {
     ballHit = true;
@@ -309,7 +310,7 @@ function drawDirectionSkillBar(dt) {
     rect(xRight, directionBarY, directionBarX + barWidth - xRight, barHeight);
 
     fill('red');
-    image(targetImage, directionBarX + hitSliderX - barHeight / 2, directionBarY, barHeight, barHeight);
+    image(directionImage, directionBarX + hitSliderX - barHeight / 2, directionBarY, barHeight, barHeight);
 }
 
 function getBatterImage(batter, swingAttempt, batterIterator) {

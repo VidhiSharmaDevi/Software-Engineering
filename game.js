@@ -75,15 +75,16 @@ function preload() {
     redBatterSwung = blueBatterSwung;
     playerBatterSwung = loadImage('assets/final_design/BlueTeam/BlueBatSwing.png');
 
-    playerIdleGif = loadImage('assets/test_sprite/M-idle01.gif');
+    playerIdleGif = loadImage('assets/final_design/RedTeam/RedFieldIdle.gif');
     batterGif = loadImage('assets/temp_assets/BATTER.gif');
-    fielderIdleGif = loadImage('assets/temp_assets/IDLE1.gif');
+    fielderIdleGif = loadImage('assets/final_design/RedTeam/RedFieldIdle.gif');
     runnerRunningGif = loadImage('assets/temp_assets/RRUNGIF.gif');
     fielderRunningGif = loadImage('assets/temp_assets/LRUNGIF.gif');
     runnerIdle = loadImage('assets/temp_assets/sprites/01_idle2.png');
     catcherImg = loadImage('assets/final_design/RedTeam/RedCatcher.png');
     ballImg = loadImage('assets/Baseball1.png');
     targetImage = loadImage('assets/final_design/Target2.png');
+    directionImage = loadImage('assets/final_design/DirectArrow.png');
     settingButtonImage = loadImage('assets/final_design/game_setting2.png');
 
     currSong = loadSound('sounds/gamesong.mp3');
